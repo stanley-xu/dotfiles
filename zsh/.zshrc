@@ -1,14 +1,18 @@
 export PATH=/usr/local/bin:$PATH
 
-# Aliases
+# aliases
 source $HOME/.zsh/aliases.zsh
 
-# The following lines were added by compinstall
-zstyle :compinstall filename '/Users/stanley/.zshrc'
-
+# completion system
 autoload -Uz compinit
-compinit
-# End of lines added by compinstall
+
+# cache completion (thanks Thomas)
+typeset -i updated_at=$(date +'%j' -r ~/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)
+if [$(date +'%j') != $updated_at]; then
+  compinit -i
+else
+  compinit -C -i
+fi
 
 # Oh-my-zsh plugins
 source $HOME/.zsh/completion.zsh
@@ -19,9 +23,4 @@ source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Starship
 eval "$(starship init zsh)"
-
-# NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
