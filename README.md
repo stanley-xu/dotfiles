@@ -54,6 +54,12 @@ The .zsh/ directory contains scripts made by the community (i.e. Oh-my-zsh, etc.
       To get macOS to see zsh as a login shell; then Profile > General > Login should list zsh
     2. Profile > General > Command: $(which zsh)
 
+# Git
+
+You may want to setup your global configs now
+
+`git config --global user.email "email@example.com"`
+
 # Install more packages
 
 The following are good to start with:
@@ -65,6 +71,7 @@ The following are good to start with:
 # Install apps
 
 - VS Code
-  - Also install the command line tool `code`
+    - Also install the command line tool `code`
+    - Paste your existing `settings.json` (I keep mine in my gist)
 - Chrome (for the DevTools ;D)
 
