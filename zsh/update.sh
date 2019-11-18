@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-ZSH_DIR="/.zsh"
-ZSH_HOME=${HOME}${ZSH_DIR}
+ZSH_DIR=".zsh" # refers to the .zsh directory in this project
+ZSH_HOME=${HOME}"/"${ZSH_DIR} # the "destination" zsh directory
+ZSH_CONFIG=".zshrc" # my starter config file
 
 function do_curl {
   echo "OMZ's completion"
@@ -24,7 +25,8 @@ if [ -d ${ZSH_HOME} ]; then
 
 elif [ -d ${ZSH_DIR} ]; then
   echo 'Creating ZSH home directory...'
-  echo 'Starting with included .zsh'
+  echo 'Starting with included .zsh and .zshrc'
+  cp ${ZSH_CONFIG} ~
   cp -r ${ZSH_DIR} ~
   cd ${ZSH_HOME}
 
