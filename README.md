@@ -1,26 +1,8 @@
-Dev environment setup
-===
+# Dev environment setup
 
-The dotfiles in this repository are relevant at the [terminal setup step](#terminal-setup).
-
-I've written the rest of this for a complete guide (and reminder to myself).
+The dotfiles in this repository are relevant at step 4 of the [terminal setup](#terminal-setup).
 
 *Credit to this [article](https://dev.to/netguru/howto-my-terminal-shell-setup-hyper-js-zsh-starship-2j2k) for inspiration*
-
-## Configure the OS
-
-### macOS
-
-- Install Homebrew
-
-    `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
-
-- Install supporting utilities (may not be necessary): `xcode-select --install`
-
-### Windows
-
-Install WSL (check the most up-to-date instructions)
-- Remember to update: `sudo apt update && sudo apt upgrade`
 
 ## Terminal setup
 
