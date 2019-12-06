@@ -1,11 +1,16 @@
 # List
-alias l='ls --color=auto'
-alias ls='ls --color=auto'
-alias ll='ls --color=auto -l'
-alias lla='ls --color=auto -la'
+alias l='ls -G'
+alias ls='ls -G'
+alias la='ls -Ga'
+alias ll='ls -Gl'
+alias lla='ls -Gla'
 
 alias grep='grep --color=auto'
 alias less='less -R'
+
+# Utils
+alias zshreload='source ~/.zshrc'
+alias shtop='sudo htop'
 
 # Git
 alias gs='git status' # Show the working tree status
@@ -43,8 +48,4 @@ alias gsa='git stash apply' # Like pop, but do not remove the state from the sta
 alias gsl='git stash list' # List the stash entries that you currently have.
 alias gsp='git stash pop' # Remove a single stashed state from the stash list and apply it on top of the current working tree state, i.e., do the inverse operation of git stash push.
 alias gt='tag' # Create, list, delete or verify a tag object signed with GPG.
-
-# Misc.
-alias zshreload='source ~/.zshrc'
-alias shtop='sudo htop'
 
