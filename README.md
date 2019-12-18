@@ -1,21 +1,48 @@
-Dev environment setup
-===
+# Dotfiles
 
-The dotfiles in this repository are relevant at the [terminal setup step](#terminal-setup).
-
-I've written the rest of this for a complete guide (and reminder to myself).
+This repository contains configuration files for development tools like aliases, shell configs, etc. that I use
 
 *Credit to this [article](https://dev.to/netguru/howto-my-terminal-shell-setup-hyper-js-zsh-starship-2j2k) for inspiration*
 
-## Configure the OS
+## How to use this
 
-### macOS
+There are scripts included that can automate certain tasks:
+- Run `update.sh` without arguments
 
-- Install Homebrew
+    Will do either of the following depending on if you have a `$HOME/.zsh/` directory:
+    - Setup a new configuration
+        - This copies my starter `zsh` files and clones its dependencies
+        - The above `$HOME/.zsh/` and `$HOME/.zshrc` will be created
+    - Updating dependencies for my specific configurations
 
-    `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+## About the ZSH configs
 
-- Install supporting utilities (may not be necessary): `xcode-select --install`
+Basically: `.zshrc` is the main config file and the `.zsh/` directory contains:
+- My own alias file: `aliases.zsh`
+- Select scripts made by the community (i.e. Oh-my-zsh contributers, etc.)
+    - Instead of using a full oh-my-zsh, I pull in what I need
+
+# Dev environment setup
+
+The remaining steps are written for completeness and a reference (for myself mostly)
+
+---
+Overview:
+- macOS (10.14): Homebrew, zsh, iTerm
+- Windows: WSL, zsh, Hyper terminal
+- Extras: Starship prompt, powerline font
+
+---
+
+## Install a package manager
+
+### macOS (10.14 Mojave)
+
+Install [Homebrew](https://brew.sh/)
+
+```
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
 
 ### Windows
 
@@ -24,29 +51,26 @@ Install WSL (check the most up-to-date instructions)
 
 ## Terminal setup
 
-1. Install ZSH: `brew install zsh`
-    - Ubuntu: `sudo apt install zsh`
+1. Install ZSH: `brew install zsh` or `sudo apt install zsh`
 
 2. Set zsh as the default shell
-    - macOS:
-        1. Update list of shells: `echo "$(which zsh)" >> /etc/shells`
-            - Alternatively, skip this step and use the "Command" setting in iTerm
-        2. `chsh -s $(which zsh)`
-    - Windows: `chsh -s $(which zsh)` 
-        - If you're running a pre Fall Creators build
 
-            You're restricted to `bash` and must add `bash -c zsh` at the top of your `~/.bashrc`
+    - macOS:
+
+        Check `/etc/shells` to see that an entry for `zsh` exists but it's the default Apple supplied one; we need the one installed by Homebrew
+        1. Update list of shells: `echo "$(which zsh)" >> /etc/shells` (may need sudo)
+        2. `chsh -s $(which zsh)`
+
+    - Ubuntu: `chsh -s $(which zsh)` 
+        - *Pre Fall Creators* Windows builds are restricted to `bash`
+            
+            You can simply force zsh to start by writing `bash -c zsh` at the top of your `~/.bashrc`
 
 3. Install Starship prompt: `brew install starship`
     - Ubuntu: follow the website instructions for Linux installs
 
 4. Configure zsh
     - Run the update script: `./update.sh`
-    - My zsh settings are minimalistic
-
-        I'm using the `.zsh` directory for my user settings
-        - It contains select scripts made by the community (i.e. Oh-my-zsh contributers, etc.)
-        - `aliases.zsh` is my own alias file
 
 5. Install a Powerline font (optional)
   	- i.e. Fira Code (instructions on Github)
@@ -86,7 +110,7 @@ git config --global user.name "name"
 
 - SSH keys
     - Git: generate a key pair and copy the verification key to the Git server (Github [instructions](https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh))
-- Config file
+- Config file template
     ```
     Host *
         <Default settings>
@@ -100,7 +124,6 @@ git config --global user.name "name"
 ### Containers/VMs
 
 Install Docker for Mac/Windows
-- Bonus: Docker compose
 
 ### More packages
 
