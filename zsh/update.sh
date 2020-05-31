@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-ZSH_DIR=".zsh" # refers to the .zsh directory in this project
-ZSH_HOME=${HOME}"/"${ZSH_DIR} # the "destination" zsh directory
-ZSH_CONFIG=".zshrc" # my starter config file
+STARTER_ZSHRC="zshrc"
+ZSH_DIR="zsh"
+DST_ZSH_DIR="${HOME}/.${ZSH_DIR}" # the "destination" zsh directory
+DST_ZSHRC="${HOME}/.${STARTER_ZSHRC}" # the "destination" zshrc
 
-function do_curl {
+function update_all {
   echo "OMZ's completion"
   curl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/lib/completion.zsh -o completion.zsh
   echo ''
@@ -12,31 +13,35 @@ function do_curl {
   echo "OMZ's history"
   curl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/lib/history.zsh -o history.zsh
   echo ''
+
+  echo 'zsh-autosuggestions'
+  update_repo zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions.git
 }
 
-if [ -d ${ZSH_HOME} ]; then
-  echo 'Updating external scripts...'
-  cd ${ZSH_HOME}
+function update_repo {
+  REPO=$1 # zsh-autosuggestions
+  LINK=$2 # https://github.com/zsh-users/zsh-autosuggestions.git
 
-  do_curl
+  if [ ! -d ${REPO} ]; then
+    git clone ${LINK}
+  else
+    cd ${REPO} && git pull
+  fi
+}
 
-  echo "Updating repo: zsh-autosuggestion"
-  cd zsh-autosuggestions && git pull
+# Create starter config
+if [ ! -d ${DST_ZSH_DIR} ]; then
+  echo "${DST_ZSH_DIR} not found"
+  echo 'Copying starter .zsh/ and .zshrc ...'
 
-elif [ -d ${ZSH_DIR} ]; then
-  echo 'Creating ZSH home directory...'
-  echo 'Starting with included .zsh and .zshrc'
-  cp ${ZSH_CONFIG} ~
-  cp -r ${ZSH_DIR} ~
-  cd ${ZSH_HOME}
-
-  do_curl
-
-  echo "Cloning repo: zsh-autosuggestion"
-  git clone https://github.com/zsh-users/zsh-autosuggestions.git
+  cp ${STARTER_ZSHRC} ${DST_ZSHRC}
+  cp -r ${ZSH_DIR} ${DST_ZSH_DIR}
+  cd ${DST_ZSH_DIR}
 else
-  echo "Error: can't find ${ZSH_DIR}"
-  exit 1
+  echo 'Updating external scripts...'
+  cd ${DST_ZSH_DIR}
 fi
+
+update_all
 
 echo 'Done'  

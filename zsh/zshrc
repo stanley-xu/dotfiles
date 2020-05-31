@@ -1,0 +1,15 @@
+# completion system (leave disabled if using p10k)
+# autoload -Uz compinit
+
+# aliases
+source $HOME/.zsh/aliases.zsh
+
+# Oh-my-zsh plugins
+source $HOME/.zsh/completion.zsh
+source $HOME/.zsh/history.zsh
+
+# zsh-autocompletion
+source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Starship
+# eval "$(starship init zsh)"
