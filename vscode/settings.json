@@ -1,0 +1,60 @@
+{
+  // editor settings
+  "editor.wordWrap": "on",
+  "editor.tabSize": 2,
+  "editor.fontFamily": "MesloLGS NF, Fira Code, Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontLigatures": true,
+  "workbench.panel.defaultLocation": "right",
+
+  // integrated terminal
+  "terminal.integrated.fontFamily": "MesloLGS NF",
+
+  // ext. settings
+  "latex-workshop.latex.outDir": "pdf", // directory searched for generated files (i.e. pdf)
+  "latex-workshop.latex.tools":[
+    {
+      "name": "latexmk",
+      "command": "latexmk",
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-pdf",
+        "-aux-directory=pdf", // output
+        "-output-directory=pdf", // output
+        "%DOC%"
+      ],
+      "env": {}
+    },
+    {
+      "name": "pdflatex",
+      "command": "pdflatex",
+      "args": [
+        "-synctex=1",
+        "-aux-directory=pdf", // output
+        "-output-directory=pdf", // output
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "%DOC%"
+      ],
+      "env": {}
+    },
+  ],
+
+  "ruby.format": "rubocop",
+  "ruby.codeCompletion": "rcodetools",
+  "ruby.useLanguageServer": true,
+  "ruby.useBundler": true,
+  "ruby.intellisense": "rubyLocate",
+  "ruby.lint": {
+      "rubocop": {
+          "useBundler": true
+      },
+  },
+  "ruby.lintDebounceTime": 500,
+  "[ruby]": {
+      // "editor.formatOnSave": true,
+      "editor.insertSpaces": true,
+      "editor.defaultFormatter": "rebornix.ruby",
+  }
+}
