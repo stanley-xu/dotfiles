@@ -15,3 +15,9 @@ If `$HOME/.zsh/` doesn't exist:
 
 Otherwise
 - Updating dependencies for my specific configurations
+
+## TODO
+
+[ ] Research/use [Prezto](https://github.com/sorin-ionescu/prezto) so I don't shoot myself in the foot too much
+
+[ ] Using a `/modules` to `source`

@@ -1,7 +1,4 @@
-# completion system (leave disabled if using p10k)
-# autoload -Uz compinit
-
-# aliases
+# Custom
 source $HOME/.zsh/aliases.zsh
 
 # Oh-my-zsh plugins
@@ -11,5 +8,17 @@ source $HOME/.zsh/history.zsh
 # zsh-autocompletion
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# Starship
-# eval "$(starship init zsh)"
+# ------------ Completion system
+
+# Load and initialize the completion system ignoring insecure directories with a
+# cache time of 20 hours, so it should almost always regenerate the first time a
+# shell is opened each day.
+# Credit: [Prezto](https://github.com/sorin-ionescu/prezto/blob/master/modules/completion/init.zsh)
+autoload -Uz compinit
+_comp_files=(${ZDOTDIR:-$HOME}/.zcompdump(Nm-20))
+if (( $#_comp_files )); then
+  compinit -i -C
+else
+  compinit -i
+fi
+unset _comp_files
