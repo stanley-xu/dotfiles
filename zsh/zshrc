@@ -19,11 +19,13 @@ unset _comp_files
 
 # ------------ Custom
 
+# Personal
+source $HOME/.zsh/aliases.zsh
+
 # zsh-autocompletion
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # p10k
+# To customize prompt, run `p10k configure` or edit p10k.zsh.
 source $HOME/.zsh/powerlevel10k/powerlevel10k.zsh-theme
-
-# Personal
-source $HOME/.zsh/aliases.zsh
+[[ ! -f $HOME/.zsh/p10k.zsh ]] || source $HOME/.zsh/p10k.zsh
