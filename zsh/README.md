@@ -6,7 +6,11 @@ Rather than use a complete "configuration framework" like Oh-my-zsh, I decided t
 
 ## Script usage
 
+Run the update script
+
+```bash
 `./update.sh`
+```
 
 If `$HOME/.zsh/` doesn't exist:
 - Setup a new configuration

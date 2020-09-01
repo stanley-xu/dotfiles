@@ -6,6 +6,8 @@ DST_ZSH_DIR="${HOME}/.${ZSH_DIR}" # the "destination" zsh directory
 DST_ZSHRC="${HOME}/.${STARTER_ZSHRC}" # the "destination" zshrc
 
 function update_all {
+  cd ${DST_ZSH_DIR}
+
   echo "OMZ's completion"
   curl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/lib/completion.zsh -o completion.zsh
   echo ''
@@ -25,23 +27,36 @@ function update_repo {
   if [ ! -d ${REPO} ]; then
     git clone ${LINK}
   else
-    cd ${REPO} && git pull
+    git -C ${REPO} pull
   fi
 }
 
-# Create starter config
-if [ ! -d ${DST_ZSH_DIR} ]; then
-  echo "${DST_ZSH_DIR} not found"
-  echo 'Copying starter .zsh/ and .zshrc ...'
+function add_p10k {
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+  echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>! ~/.zshrc
+}
 
-  cp ${STARTER_ZSHRC} ${DST_ZSHRC}
-  cp -r ${ZSH_DIR} ${DST_ZSH_DIR}
-  cd ${DST_ZSH_DIR}
-else
-  echo 'Updating external scripts...'
-  cd ${DST_ZSH_DIR}
-fi
+function run {
+  cd "$(dirname "$0")"
 
-update_all
+  # Create starter config
+  if [ ! -d ${DST_ZSH_DIR} ]; then
+    echo "${DST_ZSH_DIR} not found"
+
+    if [ -d "$HOME/powerlevel10k" ]; then
+      echo 'Adding powerlevel10k...'
+      add_p10k
+    fi
+    
+    echo 'Copying starter .zsh/ and .zshrc...'
+    cp ${STARTER_ZSHRC} ${DST_ZSHRC} && cp -r ${ZSH_DIR} ${DST_ZSH_DIR}
+  else
+    echo 'Updating external scripts...'
+  fi
+
+  update_all
+}
+
+run
 
 echo 'Done'  
