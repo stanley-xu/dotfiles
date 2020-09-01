@@ -1,12 +1,6 @@
-# Custom
-source $HOME/.zsh/aliases.zsh
-
-# Oh-my-zsh plugins
+# Oh-my-zsh
 source $HOME/.zsh/completion.zsh
 source $HOME/.zsh/history.zsh
-
-# zsh-autocompletion
-source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # ------------ Completion system
 
@@ -22,3 +16,14 @@ else
   compinit -i
 fi
 unset _comp_files
+
+# ------------ Custom
+
+# zsh-autocompletion
+source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# p10k
+source $HOME/.zsh/powerlevel10k/powerlevel10k.zsh-theme
+
+# Personal
+source $HOME/.zsh/aliases.zsh
