@@ -6,13 +6,11 @@ DST_ZSH_HOME="${HOME}/.${STARTER_ZSH_HOME}" # the "destination" zsh directory
 DST_ZSHRC="${HOME}/.${STARTER_ZSHRC}" # the "destination" zshrc
 
 function update_all {
-  cd ${DST_ZSH_HOME}
-
   out "OMZ's completion"
-  curl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/lib/completion.zsh -o completion.zsh
+  fetch completion.zsh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/lib/completion.zsh
 
   out "OMZ's history"
-  curl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/lib/history.zsh -o history.zsh
+  fetch history.zsh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/lib/history.zsh
 
   out 'zsh-autosuggestions'
   update_repo zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions.git
@@ -24,6 +22,13 @@ function update_all {
 function out {
   echo ''
   echo $1
+}
+
+function fetch {
+  DST="${DST_ZSH_HOME}/$1"
+  LINK=$2
+
+  curl ${LINK} -o ${DST}
 }
 
 function update_repo {
@@ -47,7 +52,7 @@ function run {
     out 'Copying starter .zsh/ and .zshrc...'
     cp ${STARTER_ZSHRC} ${DST_ZSHRC} && cp -r ${STARTER_ZSH_HOME} ${DST_ZSH_HOME}
   else
-    out 'Updating external scripts...'
+    out 'Updating dependencies...'
   fi
 
   update_all
