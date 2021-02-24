@@ -1,7 +1,12 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-ALIASES_FILE='aliases.zsh'
+STARTER_ZSHRC="$(readlink -f zshrc)" # absolute path
+# STARTER_VIMRC='' (TODO)
 
+# Link a starter files
+# ln -sf ${STARTER_ZSHRC} "${HOME}/.zshrc"
+
+# Install prezto
 git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 
 setopt EXTENDED_GLOB
@@ -9,8 +14,5 @@ for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
   ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
 done
 
-cp ${ALIASES_FILE} $HOME
-echo "source ${ALIASES_FILE}" >> $HOME/.zshrc
-
 echo 'Exiting install script...'
-cat $HOME/.zshrc 
+exec zsh
