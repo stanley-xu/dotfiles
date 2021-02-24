@@ -1,4 +1,8 @@
+# Starter zshrc
+
 # My aliases
+alias ll='ls -l'
+alias la='ls -al'
 alias gst='git status'
 alias gcsf='git show --name-status --pretty=""' # show all files changed
 

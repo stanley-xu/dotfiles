@@ -1,15 +1,15 @@
 #!/usr/bin/env zsh
 
-# STARTER_ZSHRC="$(readlink -f zshrc)" # absolute path
-# STARTER_VIMRC='' (TODO)
+###
+# Clones the Prezto framework for zsh and overwrites the relevant zsh rcfiles at $HOME
+# with the ones in .zprezto/
+###
 
-# Link a starter files
-# ln -sf ${STARTER_ZSHRC} "${HOME}/.zshrc"
-
-# Install prezto
+# Download prezto
 git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 
+# Symlinks $ZDOTDIR:-$HOME/.<rcfiles> -> ZDOTDIR:-$HOME/.zprezto/runcoms/rcfiles
 setopt EXTENDED_GLOB
 for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
-  ln -sf "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
+  ln -sf "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}" # override existing rcfiles
 done
