@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-STARTER_ZSHRC="$(readlink -f zshrc)" # absolute path
+# STARTER_ZSHRC="$(readlink -f zshrc)" # absolute path
 # STARTER_VIMRC='' (TODO)
 
 # Link a starter files
@@ -13,6 +13,3 @@ setopt EXTENDED_GLOB
 for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
   ln -sf "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
 done
-
-echo 'Exiting install script...'
-exec zsh
