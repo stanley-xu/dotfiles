@@ -1,0 +1,10 @@
+[alias]
+	st = status
+	sh = show
+	a = add
+	b = branch
+	c = commit
+	d = diff
+	l = log
+	r = rebase
+	re = reset

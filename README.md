@@ -1,9 +1,15 @@
 # Dotfiles
 
-This repository contains configuration files for development tools like aliases, shell configs, etc. that I use
+This repo contains configuration files for dev tools like aliases, shell configs, etc. that I use
 
-## Resources
+Thanks to Dotbot, to get started, just do this:
 
-- https://dev.to/netguru/howto-my-terminal-shell-setup-hyper-js-zsh-starship-2j2k
-- https://github.com/sorin-ionescu/prezto
+```sh
+./install
+```
+
+*Use for inspiration :)*
+
+## Resources & Inspo
+
 - https://dotfiles.github.io/
