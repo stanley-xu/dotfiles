@@ -17,4 +17,6 @@
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
-  - [post_install, Running post-install script]
+  - 
+    command: post_install
+    stderr: true
