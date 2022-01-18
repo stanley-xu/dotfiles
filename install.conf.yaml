@@ -6,9 +6,7 @@
 
 - link:
     ~/.gitconfig: gitconfig
-    ~/.zshrc:
-      path: zshrc
-      force: true
+    ~/.zshrc: zshrc
     # ~/.tmux.conf: tmux.conf
     # ~/.vim: vim
     # ~/.vimrc: vimrc
@@ -19,3 +17,4 @@
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
+  - [post_install, Running post-install script]
