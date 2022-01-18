@@ -18,5 +18,6 @@
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
   - 
+    description: Run a script after installation
     command: ./post_install.sh
     stderr: true
