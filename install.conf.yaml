@@ -5,8 +5,12 @@
 - clean: ['~']
 
 - link:
-    ~/.gitconfig: gitconfig
-    ~/.zshrc: zshrc
+    ~/.gitconfig:
+      path: gitconfig
+      if: '[ ! -f ~/.gitconfig ]'
+    ~/.zshrc:
+      path: zshrc
+      if: '[ ! -f ~/.zshrc ]'
     # ~/.tmux.conf: tmux.conf
     # ~/.vim: vim
     # ~/.vimrc: vimrc
