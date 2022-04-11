@@ -1,3 +1,8 @@
+# Local overrides
+if [ -f ~/.zshrc_local ]; then
+    source ~/.zshrc_local
+fi
+
 # Seeded from @stanley-xu/dotfiles
 
 # ------------------- Simple aliases
