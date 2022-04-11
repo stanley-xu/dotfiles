@@ -8,3 +8,5 @@
 	l = log
 	r = rebase
 	re = reset
+[include]
+	path = ~/.gitconfig_local
