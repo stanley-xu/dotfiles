@@ -15,10 +15,6 @@
     # ~/.vim: vim
     # ~/.vimrc: vimrc
 
-- create:
-    - ~/downloads
-    - ~/.vim/undo-history
-
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
 
