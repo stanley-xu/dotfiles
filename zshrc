@@ -2,7 +2,7 @@
 # Add tool-specific configs below, or use ~/.zshrc.local
 
 # Source my main config
-source ~/.zshrc.root
+source ~/.config/zsh/main.zsh
 
 # Source local overrides if they exist
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local

@@ -6,7 +6,8 @@
 
 - link:
     ~/.zshrc: zshrc
-    ~/.zshrc.root: zshrc.root
+    ~/.config/zsh: config/zsh
+    # ~/.zshrc.root: zshrc.root
     ~/.gitconfig:
       path: gitconfig
       force: true
