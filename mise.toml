@@ -1,0 +1,6 @@
+[tools]
+node = "lts"
+python = "3.11"
+go = "latest"
+ruby = "latest"
+# Add other tools as needed

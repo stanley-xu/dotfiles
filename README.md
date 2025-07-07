@@ -1,15 +1,15 @@
 # Dotfiles
 
-This repo contains configuration files for dev tools like aliases, shell configs, etc. that I use
+This repo contains configuration files for dev tools like shells, git, etc. that I use.
 
-Thanks to Dotbot, to get started, just do this:
+Thanks to [Dotbot](https://github.com/anishathalye/dotbot), I just have a declarative [yaml file](install.conf.yaml) that describes my setup.
 
-```sh
-./install
-```
+Then I just run `./install`
 
-*Use for inspiration :)*
+_Use for inspiration :)_
 
-## Resources & Inspo
+---
+
+## Resources
 
 - https://dotfiles.github.io/

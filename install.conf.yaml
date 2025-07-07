@@ -5,16 +5,22 @@
 - clean: ['~']
 
 - link:
+    ~/.zshrc: zshrc
+    ~/.zshrc.root: zshrc.root
     ~/.gitconfig:
       path: gitconfig
       force: true
-    ~/.zshrc:
-      path: zshrc
-      force: true
-    # ~/.tmux.conf: tmux.conf
-    # ~/.vim: vim
-    # ~/.vimrc: vimrc
+    ~/.config/mise/config.toml:
+      create: true
+      path: mise.toml
+    ~/.vimrc: vimrc
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
-
+  - [curl https://mise.run | sh, Install mise]
+  - [mise --version, Verify mise installation]
+  -
+    command: mise install
+    description: Install all tools from mise.toml
+    stdout: true
+    stderr: true

@@ -12,4 +12,4 @@
 	r = rebase
 	re = reset
 [include]
-	path = ~/.gitconfig_local
+	path = ~/.gitconfig.local
