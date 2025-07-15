@@ -53,6 +53,15 @@ mise.toml     -> ~/.config/mise/config.toml
 3. **Review what they added**: Decide if it's worth keeping
 4. **Evolve if needed**: Move to `~/.config/` organization when complexity grows
 
+## XDG Base Directory Specification
+
+This setup respects XDG variables when tools support them:
+
+- **XDG_CONFIG_HOME** (`~/.config/`): Files you customize (settings, keybindings, themes)
+- **XDG_DATA_HOME** (`~/.local/share/`): Files apps manage internally (databases, logs, generated content)
+
+**Key difference**: Config files are meant for user editing; data files are managed by applications.
+
 ---
 
 ## Resources

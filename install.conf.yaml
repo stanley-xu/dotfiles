@@ -2,12 +2,11 @@
     link:
       relink: true
 
-- clean: ['~']
+- clean: ["~"]
 
 - link:
     ~/.zshrc: zshrc
     ~/.config/zsh: config/zsh
-    # ~/.zshrc.root: zshrc.root
     ~/.gitconfig:
       path: gitconfig
       force: true
@@ -17,11 +16,10 @@
     ~/.vimrc: vimrc
 
 - shell:
-  - [git submodule update --init --recursive, Installing submodules]
-  - [curl https://mise.run | sh, Install mise]
-  - [mise --version, Verify mise installation]
-  -
-    command: mise install
-    description: Install all tools from mise.toml
-    stdout: true
-    stderr: true
+    - [git submodule update --init --recursive, Installing submodules]
+    - [curl https://mise.run | sh, Install mise]
+    - [mise --version, Verify mise installation]
+    - command: mise install
+      description: Install all tools from mise.toml
+      stdout: true
+      stderr: true

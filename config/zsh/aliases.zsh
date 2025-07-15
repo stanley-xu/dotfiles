@@ -1,3 +1,10 @@
+# Shell
+alias ls='ls --color'
+alias l='ls'
+alias ll='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
+
 # Git
 alias g='git'
 alias gst='git status'
