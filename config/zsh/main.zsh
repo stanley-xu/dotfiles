@@ -3,6 +3,8 @@
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
+export USER_INSTALLS="$HOME/.local/bin" # common convention (incl. mise)
+export PATH="$USER_INSTALLS:$PATH"
 
 HISTSIZE=5000
 HISTFILE=~/.zsh_history
@@ -27,7 +29,7 @@ bindkey '^n' history-search-forward
 source ~/.config/zsh/aliases.zsh
 
 ### fzf
-FZF_HOME="${XDG_DATA_HOME}/fzf/fzf.git}"
+FZF_HOME="${XDG_DATA_HOME}/fzf/fzf.git"
 FZF_CONFIG_HOME="${XDG_CONFIG_HOME}/fzf"
 # Clone if needed
 if [ ! -d "${FZF_HOME}" ]; then
@@ -75,4 +77,14 @@ zinit cdreplay -q
 # Mise initialization
 if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate zsh)"
+else
+  echo 'mise not found, installing...'
+  curl https://mise.run | sh
+  mise --version
+
+  echo 'Activating mise...'
+  eval "$(mise activate zsh)"
+
+  echo 'Verifying mise...'
+  mise doctor
 fi

@@ -6,7 +6,9 @@
 
 - link:
     ~/.zshrc: zshrc
+    ~/.zshrc.local: zshrc.local
     ~/.config/zsh: config/zsh
+    ~/.config/ohmyposh: config/ohmyposh
     ~/.gitconfig:
       path: gitconfig
       force: true
@@ -15,11 +17,7 @@
       path: mise.toml
     ~/.vimrc: vimrc
 
+# Warning: do not install tools that modify PATH here
+# It may not expect the dotbot subshell environment
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
-    - [curl https://mise.run | sh, Install mise]
-    - [mise --version, Verify mise installation]
-    - command: mise install
-      description: Install all tools from mise.toml
-      stdout: true
-      stderr: true
