@@ -61,7 +61,15 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}" # colourize completions
 zstyle ':completion:*' menu no # opt out of default ls menu (for fzf-tab)
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath' # preview colourized dir submenu
 
+# More plugins
+# https://github.com/ohmyzsh/ohmyzsh/wiki/plugins
+zinit snippet OMZP::git
+zinit snippet OMZP::sudo
+zinit snippet OMZP::command-not-found
+
+# See https://github.com/zdharma-continuum/zinit?tab=readme-ov-file#completions-2
 autoload -U compinit && compinit
+zinit cdreplay -q
 ###
 
 # Mise initialization
