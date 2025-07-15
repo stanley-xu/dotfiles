@@ -22,12 +22,23 @@ setopt hist_find_no_dups
 bindkey -e # emacs-mode hotkeys (e.g. CTRL + F to accept autosuggest)
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
-
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' # update autocomplete matcher to be case-insensitive
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}" # colourize completions
 ###
 
 source ~/.config/zsh/aliases.zsh
+
+### fzf
+FZF_HOME="${XDG_DATA_HOME}/fzf/fzf.git}"
+FZF_CONFIG_HOME="${XDG_CONFIG_HOME}/fzf"
+# Clone if needed
+if [ ! -d "${FZF_HOME}" ]; then
+  mkdir -p "$(dirname) ${FZF_HOME}"
+  git clone --depth 1 https://github.com/junegunn/fzf.git "${FZF_HOME}"
+  ${FZF_HOME}/install --xdg
+fi
+
+# fzf initialization
+[ -f "${FZF_CONFIG_HOME}/fzf.zsh" ] && source "${FZF_CONFIG_HOME}/fzf.zsh"
+###
 
 ### Zinit
 ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git"
@@ -43,6 +54,12 @@ source "${ZINIT_HOME}/zinit.zsh"
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
+zinit light Aloxaf/fzf-tab
+
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' # update autocomplete matcher to be case-insensitive
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}" # colourize completions
+zstyle ':completion:*' menu no # opt out of default ls menu (for fzf-tab)
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath' # preview colourized dir submenu
 
 autoload -U compinit && compinit
 ###
