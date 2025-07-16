@@ -1,0 +1,15 @@
+[user]
+	name = Stanley Xu
+	email = stanley.xuu@gmail.com
+[alias]
+	st = status
+	sh = show
+	a = add
+	b = branch
+	c = commit
+	d = diff
+	l = log
+	r = rebase
+	re = reset
+[include]
+	path = ~/.gitconfig.local
