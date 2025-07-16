@@ -1,0 +1,9 @@
+# This file is managed by dotfiles via chezmoi
+
+# Source my main config
+source ~/.config/zsh/main.zsh
+
+# Substitute machine-specific configs
+{{ if eq .chezmoi.os "darwin" }}
+{{-   include "dot_zshrc.darwin" -}}
+{{- end -}}
