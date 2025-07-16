@@ -6,7 +6,6 @@
 
 - link:
     ~/.zshrc: zshrc
-    ~/.zshrc.local: zshrc.local
     ~/.config/zsh: config/zsh
     ~/.config/ohmyposh: config/ohmyposh
     ~/.gitconfig:
