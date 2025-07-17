@@ -73,6 +73,15 @@ autoload -U compinit && compinit
 zinit cdreplay -q
 ###
 
+# Zoxide
+if command -v zoxide > /dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+else
+  echo 'zoxide not found, installing'
+  curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+  eval "$(zoxide init zsh)"
+fi
+
 # Mise initialization
 if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate zsh)"
