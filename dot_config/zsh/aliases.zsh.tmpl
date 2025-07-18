@@ -1,5 +1,9 @@
 # Shell
+{{- if eq .chezmoi.os "darwin" }}
+alias ls='gls --color'
+{{- else }}
 alias ls='ls --color'
+{{- end }}
 alias l='ls'
 alias ll='ls -l'
 alias la='ls -a'
