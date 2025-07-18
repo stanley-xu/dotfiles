@@ -6,7 +6,7 @@ final_space = true
   black = '#262B44'
   white = '#E0DEF4'
   grey = '#6c6c6c'
-  accent = 'lightBlue'
+  accent = '#00d5ff'
 
 [transient_prompt]
   template = '> '
