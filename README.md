@@ -19,7 +19,9 @@ These have been simplified to use [chezmoi](https://www.chezmoi.io).
 
 ## Usage
 
-Use `chezmoi` to interface with dotfiles instead of directly editing dotfiles in $HOME 
+`chezmoi` acts as the manager of the dotfiles.
+
+### Quickstart
 
 ```sh
 chezmoi cd # look around at the managed files (also see `chezmoi managed`)
