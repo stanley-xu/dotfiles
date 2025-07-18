@@ -2,12 +2,76 @@
 	name = Stanley Xu
 	email = stanley.xuu@gmail.com
 [alias]
+	# High-frequency commands (short aliases)
 	st = status
-	sh = show
-	a = add
-	b = branch
-	c = commit
 	d = diff
+	a = add
+	aa = add .
 	l = log
+	lo = log --pretty=oneline --abbrev-commit
+	lg = log --graph --decorate --pretty=oneline --abbrev-commit
+	sh = show
 	r = rebase
+	ra = rebase --abort
+	rc = rebase --continue
+	ri = rebase --interactive
+	rs = rebase --skip
+	pure = pull --rebase
+	f = fetch
+	fo = fetch origin
 	re = reset
+	reh = reset --hard
+	res = reset --soft
+	rep = reset @^
+	rehp = reset --hard @^
+	resp = reset --soft @^
+	
+	# Manage: branches
+	co = checkout
+	sw = switch
+
+	# Manage: index (working copy)
+	unstage = reset HEAD --
+	discard = checkout --
+	
+	# Manage: staging
+	ap = add --patch
+	ai = add --interactive
+
+	# Workflow: adding
+	ac = "!git add . && git commit"
+	acm = "!git add . && git commit --message"
+
+	# Workflow: syncing
+	pull-ff = pull --ff-only
+	push-setup = "!git push --set-upstream origin $(git branch --show-current)"
+	sync = "!git pull origin $(git branch --show-current) && git push origin $(git branch --show-current)"
+	
+	# Commit
+	c = commit --verbose
+	cm = commit --message
+	cam = commit --all --message
+	commit-amend = commit --amend HEAD
+	commit-amend-reuse = commit --amend --reuse-message HEAD
+	cherry-pick-ff = cherry-pick --ff
+	
+	# Push
+	p = push
+	pf = push --force-with-lease
+	pforce = push --force
+	
+	# Reset (descriptive for less common)
+	reset-hard = reset --hard
+	
+	# Stash
+	st-save = stash push
+	st-pop = stash pop
+	st-list = stash list
+	
+	# Remote
+	remote-show = remote -v
+	remote-add = remote add
+	
+	# Merge
+	m = merge
+	merge-abort = merge --abort
