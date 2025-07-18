@@ -1,20 +1,20 @@
 # 👋 Welcome to my dotfiles!
 
-These have been simplified to using [chezmoi](https://www.chezmoi.io).
+These have been simplified to use [chezmoi](https://www.chezmoi.io).
 
 ## Get started
 
 - Install and apply dotfiles
 
   ```sh
-  sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply $GITHUB_USERNAME
+  sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply "stanley-xu"
   ```
 
 - Use system package manager
 
   ```sh
   brew install chezmoi
-  chezmoi init --apply $GITHUB_USERNAME
+  chezmoi init --apply "stanley-xu"
   ```
 
 ## Usage
