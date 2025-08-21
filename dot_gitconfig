@@ -75,3 +75,5 @@
 	# Merge
 	m = merge
 	merge-abort = merge --abort
+[init]
+	defaultBranch = main
