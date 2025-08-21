@@ -2,6 +2,8 @@
 
 These have been simplified to use [chezmoi](https://www.chezmoi.io) 🏡
 
+Thank you to the maintainers of all the [cool stuff](#projects-involved) I use!
+
 ## Let's go!
 
 - Install and apply dotfiles
@@ -70,7 +72,7 @@ Editing the source dotfile
 
 ---
 
-## Projects that my dotfiles involve
+## Projects involved
 
 - CLI tools
   - [zinit](https://github.com/zdharma-continuum/zinit) for zsh plugins
