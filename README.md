@@ -1,36 +1,54 @@
 # 👋 Welcome to my dotfiles
 
-These have been simplified to use [chezmoi](https://www.chezmoi.io) 🏡
+You can use this one-liner in your shell:
 
-Thank you to the maintainers of all the [cool stuff](#projects-involved) I use!
+```sh
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply "stanley-xu"
+```
 
-## Let's go!
+Or, this script that I host (which will install `mise` too):
 
-- Install and apply dotfiles
+```sh
+curl -fsSL dotfiles.stanleyxu.me | sh
+```
 
-  ```sh
-  sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply "stanley-xu"
-  ```
+Or, use your system's package manager:
 
-- Use system package manager
+```sh
+# macOS
+brew install chezmoi
+chezmoi init --apply "stanley-xu"
+```
 
-  ```sh
-  # macOS
-  brew install chezmoi
-  chezmoi init --apply "stanley-xu"
-  ```
+## Layout
 
-## What is this?
+There are a few ways these dotfiles install my tools:
 
-After the one-time `init` from above, the dotfiles should be good to go.
+### 1. [Bootstrap Script](dotfiles.stanleyxu.me)
 
-You're responsible for keeping the dotfiles in sync with the usual git workflow (pull, commit, push). The only difference here, is that there is now a space where `chezmoi` tracks / manages your dotfiles; also called the **source** directory. Dotfiles in here are simply copies that are renamed (e.g. `$HOME/.zshrc` -> `$CHEZMOI_HOME/dot_zshrc`). This space is what `chezmoi` treats as a source of truth when it **applies** dotfiles: writing back to your system `$CHEZMOI_HOME/dot_zshrc` -> `$HOME/.zshrc`.
+- Installs and activates [mise](https://mise.jdx.dev/) for tooling
+- Uses mise to install [chezmoi](https://www.chezmoi.io/) for dotfiles
+- Applies dotfiles via `chezmoi init --apply`
 
-Source directory == this git repo == `$CHEZMOI_HOME` == `~/.local/share/chezmoi`
+### 2. Chezmoi Scripts (`run_onchange_*.sh`)
 
-## How do I use this?
+- Install **Homebrew** (if not present)
+- Install Homebrew packages (coreutils, oh-my-posh, etc.)
+- One-time setup tasks (symlinks, etc.)
+- Re-run automatically when script content changes
 
-**Note:** any path referenced in the below commands are paths to your **actual** dotfiles (like `.zshrc`) in your system; not the managed version (like `dot_zshrc`).
+### 3. Shell RC Files (`main.zsh`)
+
+- Install/activate **git-cloned tools** (`fzf`, `zinit`)
+- Activate **mise** and **zoxide** for each shell session
+- Self-healing: reinstalls if tools are missing
+
+---
+
+<details>
+<summary>What is chezmoi?</summary>
+
+## `chezmoi` manages dotfiles
 
 - **Add** to the managed space using `chezmoi add /path/to/file`
 - **Edit** these files using `chezmoi edit /path/to/file`, or however you like[^1].
@@ -46,6 +64,7 @@ Source directory == this git repo == `$CHEZMOI_HOME` == `~/.local/share/chezmoi`
 [^1]: [these](https://www.chezmoi.io/user-guide/frequently-asked-questions/usage/#how-do-i-edit-my-dotfiles-with-chezmoi) are all the ways you could edit
 
 Example
+
 ```sh
 chezmoi edit ~/.zshrc
 chezmoi diff
@@ -53,26 +72,31 @@ chezmoi apply
 git commit -am "Made a change" && git push
 ```
 
-### More useful commands
+### Cheatsheet
 
 Shortcuts
+
 - `chezmoi cd` change directory straight to this repo (I also symlink `~/dotfiles` to this repo; it's easier to find and remember)
 - `chezmoi managed` shows you what is tracked by chezmoi
 - `chezmoi status` gives a quick summary of what files would change if you ran `chezmoi apply`
 
 Adding (`chezmoi add file`)
+
 - `--template` flag adds `file` as a template
 - `--follow` flag follows symlinks so chezmoi can target real files
 
 Editing the source dotfile
+
 - Setup your preferred editor
 - `chezmoi edit` will open the entire source (managed) directory
 - `chezmoi edit --apply file` will apply changes after the editor closes
 - `chezmoi edit --watch file` will apply changes after the file is saved in the editor
 
+</details>
+
 ---
 
-## Projects involved
+## Shoutouts
 
 - CLI tools
   - [zinit](https://github.com/zdharma-continuum/zinit) for zsh plugins

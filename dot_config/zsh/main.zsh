@@ -33,7 +33,7 @@ FZF_HOME="${XDG_DATA_HOME}/fzf/fzf.git"
 FZF_CONFIG_HOME="${XDG_CONFIG_HOME}/fzf"
 # Clone if needed
 if [ ! -d "${FZF_HOME}" ]; then
-  mkdir -p "$(dirname) ${FZF_HOME}"
+  mkdir -p "$(dirname "${FZF_HOME}")"
   git clone --depth 1 https://github.com/junegunn/fzf.git "${FZF_HOME}"
   ${FZF_HOME}/install --xdg
 fi
@@ -46,8 +46,8 @@ fi
 ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git"
 # Clone zinit if needed
 if [ ! -d "${ZINIT_HOME}" ]; then
-  mkdir -p "$(dirname) ${ZINIT_HOME}"
-  git clone git@github.com:zdharma-continuum/zinit.git "${ZINIT_HOME}"
+  mkdir -p "$(dirname "${ZINIT_HOME}")"
+  git clone https://github.com/zdharma-continuum/zinit.git "${ZINIT_HOME}"
 fi
 
 source "${ZINIT_HOME}/zinit.zsh"
