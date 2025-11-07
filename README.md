@@ -1,16 +1,17 @@
 # 👋 Welcome to my dotfiles
 
-You can use this one-liner in your shell:
+In a nutshell, I use [mise](https://mise.jdx.dev/) for tooling and [chezmoi](https://www.chezmoi.io/) for dotfiles management.
 
-```sh
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply "stanley-xu"
-```
+Here are some one-liners:
+- from chezmoi
+   ```sh
+   sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply "stanley-xu"
+   ```
 
-Or, this script that I host (which will install `mise` too):
-
-```sh
-curl -fsSL dotfiles.stanleyxu.me | sh
-```
+- from my hosted script (also installs `chezmoi`)
+   ```sh
+   curl -fsSL dotfiles.stanleyxu.me | sh
+   ```
 
 Or, use your system's package manager:
 
@@ -27,11 +28,11 @@ chezmoi init --apply "stanley-xu"
 │   └── agents
 ├── dot_config                                  # XDG_CONFIG_HOME
 │   ├── chezmoi
-│   │   └── chezmoi.toml
+│   │   └── chezmoi.toml                        # chezmoi config (e.g. autocommit)
 │   ├── mise
-│   │   └── config.toml
+│   │   └── config.toml                         # (user) mise config (e.g. ruby)
 │   ├── ohmyposh
-│   │   └── prompt.toml
+│   │   └── prompt.toml                         # terminal prompt
 │   └── zsh
 │       ├── aliases.zsh.tmpl                    # aliases
 │       ├── install-tools.zsh                   # (re)installs tools
@@ -39,16 +40,15 @@ chezmoi init --apply "stanley-xu"
 ├── dot_docker
 ├── dot_gitconfig
 ├── dot_vimrc
-├── dot_zshrc.darwin                            # macOS
+├── dot_zshrc.darwin                            # zshrc (macOS)
 ├── dot_zshrc.tmpl                              # zshrc
 ├── README.md
 ├── run_once_symlink_dotfiles.sh                # symlink `~/dotfiles` -> `$XDG_DATA_HOME/chezmoi`
 └── run_onchange_install-brew-packages.sh.tmpl  # (re)installs Homebrew and packages
 ```
 
-## Installation surfaces
-
-1. [Bootstrap Script](dotfiles.stanleyxu.me): installs [mise](https://mise.jdx.dev/) for tooling and [chezmoi](https://www.chezmoi.io/) for dotfiles
+Installation surfaces
+1. [Bootstrap Script](dotfiles.stanleyxu.me): installs `mise` and `chezmoi`
 2. Chezmoi Scripts (`run_*.sh`)
 
    - installs Homebrew and/or Homebrew packages (e.g. coreutils)
