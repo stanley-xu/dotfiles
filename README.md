@@ -22,26 +22,43 @@ chezmoi init --apply "stanley-xu"
 
 ## Layout
 
-There are a few ways these dotfiles install my tools:
+```
+├── dot_claude
+│   └── agents
+├── dot_config                                  # XDG_CONFIG_HOME
+│   ├── chezmoi
+│   │   └── chezmoi.toml
+│   ├── mise
+│   │   └── config.toml
+│   ├── ohmyposh
+│   │   └── prompt.toml
+│   └── zsh
+│       ├── aliases.zsh.tmpl                    # aliases
+│       ├── install-tools.zsh                   # (re)installs tools
+│       └── main.zsh                            # main file: system config, sources above files
+├── dot_docker
+├── dot_gitconfig
+├── dot_vimrc
+├── dot_zshrc.darwin                            # macOS
+├── dot_zshrc.tmpl                              # zshrc
+├── README.md
+├── run_once_symlink_dotfiles.sh                # symlink `~/dotfiles` -> `$XDG_DATA_HOME/chezmoi`
+└── run_onchange_install-brew-packages.sh.tmpl  # (re)installs Homebrew and packages
+```
 
-### 1. [Bootstrap Script](dotfiles.stanleyxu.me)
+## Installation surfaces
 
-- Installs and activates [mise](https://mise.jdx.dev/) for tooling
-- Uses mise to install [chezmoi](https://www.chezmoi.io/) for dotfiles
-- Applies dotfiles via `chezmoi init --apply`
+1. [Bootstrap Script](dotfiles.stanleyxu.me): installs [mise](https://mise.jdx.dev/) for tooling and [chezmoi](https://www.chezmoi.io/) for dotfiles
+2. Chezmoi Scripts (`run_*.sh`)
 
-### 2. Chezmoi Scripts (`run_onchange_*.sh`)
+   - installs Homebrew and/or Homebrew packages (e.g. coreutils)
+   - runs one-time setup tasks
+   - Note: only run when script content changes (due to chezmoi hashing)
 
-- Install **Homebrew** (if not present)
-- Install Homebrew packages (coreutils, oh-my-posh, etc.)
-- One-time setup tasks (symlinks, etc.)
-- Re-run automatically when script content changes
+3. Shell RC Files (`main.zsh`):
 
-### 3. Shell RC Files (`main.zsh`)
-
-- Install/activate **git-cloned tools** (`fzf`, `zinit`)
-- Activate **mise** and **zoxide** for each shell session
-- Self-healing: reinstalls if tools are missing
+   - installs other **git-sourced tools** (e.g. `fzf`); reinstalling if missing
+   - **activate** tools for each shell session (e.g. `mise`, `zoxide`)
 
 ---
 
