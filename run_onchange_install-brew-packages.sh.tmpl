@@ -17,10 +17,9 @@ fi
 
 echo "Installing/updating Homebrew packages..."
 
-# Install packages using brew bundle
-brew bundle --no-lock --file=/dev/stdin <<EOF
-brew "coreutils"  # for gls
-brew "oh-my-posh"
+# Install packages using brew bundle (source of truth: ./Brewfile)
+brew bundle --file=/dev/stdin <<'EOF'
+{{ include "Brewfile" -}}
 EOF
 
 echo "Homebrew packages installed successfully!"

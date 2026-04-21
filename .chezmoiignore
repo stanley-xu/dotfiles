@@ -1,3 +1,10 @@
 README.md
-.zprofile  # Managed by Homebrew
-.docker/config.json  # Managed by Docker CLI
+
+# Managed by Homebrew, not chezmoi
+.zprofile
+
+# Managed by Docker CLI, not chezmoi
+.docker/config.json
+
+# Consumed by run_onchange_install-brew-packages.sh.tmpl, not deployed as a dotfile
+Brewfile
