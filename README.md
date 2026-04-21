@@ -1,24 +1,21 @@
 # 👋 Welcome to my dotfiles
 
-In a nutshell, I use [mise](https://mise.jdx.dev/) for tooling and [chezmoi](https://www.chezmoi.io/) for dotfiles management.
+## Install
 
-Here are some one-liners:
-- from chezmoi
-   ```sh
-   sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply "stanley-xu"
-   ```
-
-- from my hosted script (also installs `chezmoi`)
-   ```sh
-   curl -fsSL dotfiles.stanleyxu.me | sh
-   ```
-
-Or, use your system's package manager:
+My bootstrap script (installs `mise` + `chezmoi`):
 
 ```sh
-# macOS
-brew install chezmoi
-chezmoi init --apply "stanley-xu"
+curl -fsSL dotfiles.stanleyxu.me | sh
+```
+
+Or with `chezmoi` directly:
+
+```sh
+# works on any OS
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply "stanley-xu"
+
+# or via Homebrew
+brew install chezmoi && chezmoi init --apply "stanley-xu"
 ```
 
 ## Layout
@@ -27,89 +24,86 @@ chezmoi init --apply "stanley-xu"
 ├── dot_claude
 │   └── agents
 ├── dot_config                                  # XDG_CONFIG_HOME
-│   ├── chezmoi
-│   │   └── chezmoi.toml                        # chezmoi config (e.g. autocommit)
-│   ├── mise
-│   │   └── config.toml                         # (user) mise config (e.g. ruby)
-│   ├── ohmyposh
-│   │   └── prompt.toml                         # terminal prompt
+│   ├── chezmoi/chezmoi.toml
+│   ├── mise/config.toml
+│   ├── ohmyposh/prompt.toml
 │   └── zsh
 │       ├── aliases.zsh.tmpl                    # aliases
-│       ├── install-tools.zsh                   # (re)installs tools
-│       └── main.zsh                            # main file: system config, sources above files
-├── dot_docker
+│       ├── install-tools.zsh                   # (re)installs git-sourced tools
+│       └── main.zsh                            # entry point: system config, sources the above
 ├── dot_gitconfig
 ├── dot_vimrc
-├── dot_zshrc.darwin                            # zshrc (macOS)
-├── dot_zshrc.tmpl                              # zshrc
-├── README.md
-├── run_once_symlink_dotfiles.sh                # symlink `~/dotfiles` -> `$XDG_DATA_HOME/chezmoi`
-└── run_onchange_install-brew-packages.sh.tmpl  # (re)installs Homebrew and packages
+├── dot_zshrc.darwin                            # macOS-specific, inlined by dot_zshrc.tmpl
+├── dot_zshrc.tmpl                              # generates ~/.zshrc
+├── run_once_symlink_dotfiles.sh                # symlinks `~/dotfiles` -> source dir
+└── run_onchange_install-brew-packages.sh.tmpl  # (re)installs Homebrew + packages
 ```
 
-Installation surfaces
-1. [Bootstrap Script](dotfiles.stanleyxu.me): installs `mise` and `chezmoi`
-2. Chezmoi Scripts (`run_*.sh`)
+## How it's layered
 
-   - installs Homebrew and/or Homebrew packages (e.g. coreutils)
-   - runs one-time setup tasks
-   - Note: only run when script content changes (due to chezmoi hashing)
+Three execution contexts, each running at a different time:
 
-3. Shell RC Files (`main.zsh`):
+1. **Bootstrap script** ([dotfiles.stanleyxu.me](https://dotfiles.stanleyxu.me)) — runs once on a fresh machine as a `curl … | sh` alternative to installing `chezmoi` yourself. Installs `mise` and `chezmoi`, then hands off to `chezmoi init --apply`.
+2. **Chezmoi scripts** (`run_*.sh`) — run during `chezmoi apply`. `run_once_` runs once per machine; `run_onchange_` re-runs only when the script's content hash changes (e.g. editing the brew package list triggers reinstall).
+3. **Shell rc** (`main.zsh` → `install-tools.zsh`) — runs on every shell session. Clones git-sourced tools (`fzf`, `zinit`) if missing, then activates tools for the session (`mise`, `zoxide`).
 
-   - installs other **git-sourced tools** (e.g. `fzf`); reinstalling if missing
-   - **activate** tools for each shell session (e.g. `mise`, `zoxide`)
+## Per-machine overrides
+
+Two layers, picked by whether the difference is OS-wide or machine-specific:
+
+**OS-specific** — chezmoi templating, merged at `chezmoi apply` time. `dot_zshrc.tmpl` inlines `dot_zshrc.darwin` only on macOS; add more OS branches with `{{ if eq .chezmoi.os "linux" }}`. See [chezmoi templates](https://www.chezmoi.io/user-guide/templating/).
+
+**Machine-specific** — untracked local files sourced at runtime. Drop overrides in:
+
+- `~/.gitconfig.local` — loaded by `[include]` in tracked `dot_gitconfig`
+- `~/.zshrc.local` — sourced at the end of generated `~/.zshrc`
+
+Both are silently skipped if absent, so the same tracked config works on every machine. Example (work machine forcing HTTPS for GitHub):
+
+```ini
+# ~/.gitconfig.local
+[url "https://github.com/"]
+    insteadOf = git@github.com:
+```
 
 ---
 
-<details>
-<summary>What is chezmoi?</summary>
+## Chezmoi cheatsheet
 
-## `chezmoi` manages dotfiles
-
-- **Add** to the managed space using `chezmoi add /path/to/file`
-- **Edit** these files using `chezmoi edit /path/to/file`, or however you like[^1].
-  - You can edit on your own by either editing the machine dotfile at `$HOME/*.`, or the source dotfile at `$CHEZMOI_HOME/*`
-  - If you edit the machine dotfile, be sure to sync to source directory using `chezmoi add /path/to/file` to re-add or `chezmoi merge /path/to/file`
-  - If you edit the source dotfile, you'll need to `apply` it to see it take effect on your machine
-    - This is what `chezmoi edit` does
-- **Preview** changes with `chezmoi diff`
-- **Apply** changes with `chezmoi apply`: writes to your actual dotfiles
-- **Push** changes with regular git commands
-- **Pull** down changes from upstream (this repo) and apply with `chezmoi update`
-
-[^1]: [these](https://www.chezmoi.io/user-guide/frequently-asked-questions/usage/#how-do-i-edit-my-dotfiles-with-chezmoi) are all the ways you could edit
-
-Example
+Common flow:
 
 ```sh
-chezmoi edit ~/.zshrc
-chezmoi diff
-chezmoi apply
-git commit -am "Made a change" && git push
+chezmoi edit ~/.zshrc     # edit a managed file
+chezmoi diff              # preview target-side changes
+chezmoi apply             # write to $HOME
+git commit -am "..."      # commit source (then `git push`)
 ```
 
-### Cheatsheet
+Getting around:
 
-Shortcuts
+- `chezmoi cd` — jump to the source dir (also symlinked at `~/dotfiles`)
+- `chezmoi source-path` — absolute path to the source dir (default: `~/.local/share/chezmoi`)
+- `chezmoi managed` — list files chezmoi tracks
+- `chezmoi status` — summary of what `apply` would change
 
-- `chezmoi cd` change directory straight to this repo (I also symlink `~/dotfiles` to this repo; it's easier to find and remember)
-- `chezmoi managed` shows you what is tracked by chezmoi
-- `chezmoi status` gives a quick summary of what files would change if you ran `chezmoi apply`
+Adding (`chezmoi add <file>`):
 
-Adding (`chezmoi add file`)
+- `--template` — add as a Go template (source file becomes `*.tmpl`)
+- `--follow` — resolve symlinks to the real file
 
-- `--template` flag adds `file` as a template
-- `--follow` flag follows symlinks so chezmoi can target real files
+Editing source files:
 
-Editing the source dotfile
+- `chezmoi edit` — open the source dir in `$EDITOR`
+- `chezmoi edit <file>` — open just that file's source
+- `chezmoi edit --apply <file>` — apply changes after editor exits
+- `chezmoi edit --watch <file>` — apply on every save
 
-- Setup your preferred editor
-- `chezmoi edit` will open the entire source (managed) directory
-- `chezmoi edit --apply file` will apply changes after the editor closes
-- `chezmoi edit --watch file` will apply changes after the file is saved in the editor
+Syncing:
 
-</details>
+- `chezmoi update` — `git pull` this repo + `apply`
+- Edited the real file in `$HOME` by mistake? `chezmoi add <file>` to re-ingest, or `chezmoi merge <file>` to reconcile.
+
+See [chezmoi FAQ](https://www.chezmoi.io/user-guide/frequently-asked-questions/usage/) for more.
 
 ---
 
