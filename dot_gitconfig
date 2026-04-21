@@ -77,3 +77,6 @@
 	merge-abort = merge --abort
 [init]
 	defaultBranch = main
+[include]
+	# Machine-specific overrides (silently skipped if missing)
+	path = ~/.gitconfig.local

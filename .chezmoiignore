@@ -1,2 +1,3 @@
 README.md
 .zprofile  # Managed by Homebrew
+.docker/config.json  # Managed by Docker CLI

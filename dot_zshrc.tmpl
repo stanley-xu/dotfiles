@@ -3,7 +3,9 @@
 # Source my main config
 source ~/.config/zsh/main.zsh
 
-# Substitute machine-specific configs
-{{ if eq .chezmoi.os "darwin" }}
-{{-   include "dot_zshrc.darwin" -}}
-{{- end -}}
+# OS-specific config (merged in at chezmoi apply time)
+{{ if eq .chezmoi.os "darwin" -}}
+{{   include "dot_zshrc.darwin" -}}
+{{ end }}
+# Machine-specific overrides (sourced at runtime if present)
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
