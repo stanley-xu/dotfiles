@@ -9,6 +9,5 @@ README.md
 # Consumed by run_onchange_install-from-brewfile.sh.tmpl, not deployed as a dotfile
 Brewfile
 
-# Local override files (e.g. ~/.vimrc.local): live in $HOME, never managed by
-# chezmoi. See README "Per-machine overrides".
+# Local override files (e.g. ~/.vimrc.local): live in $HOME, never managed by chezmoi.
 *.local

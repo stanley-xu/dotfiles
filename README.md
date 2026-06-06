@@ -4,8 +4,6 @@ My dotfiles don't bite!
 
 For tools like `zsh` that support "inheritance", my dotfiles stay out of your way. Your machine's `.zshrc` stays in your control, and simply `source`s mine at the beginning. You're free to override any of my config within your dotfile, or change the "root" one (at `dot_zshrc.root`). The **local config always wins**.
 
-_Note for people who aren't me: identity files like `.gitconfig` user should always be changed to be you!_
-
 ## Install
 
 ```sh

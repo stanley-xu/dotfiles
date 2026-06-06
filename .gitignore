@@ -1,4 +1,3 @@
 # Local override files: never commit, even if they accidentally land in source.
-# Real overrides live in $HOME (e.g. ~/.gitconfig.local, ~/.zshrc.local) and
-# are loaded at runtime — see README "Per-machine overrides".
+# Real overrides live in $HOME (e.g. ~/.vimrc.local), loaded at runtime.
 dot_*.local

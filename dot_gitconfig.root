@@ -77,6 +77,6 @@
 # This file is the managed git baseline (chezmoi). It is included at the TOP of
 # ~/.gitconfig, which chezmoi creates once and never touches again — so per-machine
 # and tooling writes (git config --global ...) appended below the include override
-# what's set here. See README "Per-machine overrides".
+# what's set here. See README "Shared and local configs for every computer".
 [init]
 	defaultBranch = main
