@@ -6,9 +6,9 @@ README.md
 # Managed by Docker CLI, not chezmoi
 .docker/config.json
 
-# Consumed by run_onchange_install-brew-packages.sh.tmpl, not deployed as a dotfile
+# Consumed by run_onchange_install-from-brewfile.sh.tmpl, not deployed as a dotfile
 Brewfile
 
-# Local override files: live in $HOME, never managed by chezmoi.
-# See README "Per-machine overrides".
+# Local override files (e.g. ~/.vimrc.local): live in $HOME, never managed by
+# chezmoi. See README "Per-machine overrides".
 *.local

@@ -31,12 +31,14 @@ brew install chezmoi && chezmoi init --apply "stanley-xu"
 │       ├── aliases.zsh.tmpl                    # aliases
 │       ├── install-tools.zsh                   # (re)installs git-sourced tools
 │       └── main.zsh                            # entry point: system config, sources the above
-├── dot_gitconfig
+├── create_dot_gitconfig                        # ~/.gitconfig, created once then never touched; includes ~/.gitconfig.root
+├── create_dot_zshrc                            # ~/.zshrc, created once then never touched; sources ~/.zshrc.root
+├── dot_gitconfig.root                          # managed git baseline (included by ~/.gitconfig)
 ├── dot_vimrc
-├── dot_zshrc.darwin                            # macOS-specific, inlined by dot_zshrc.tmpl
-├── dot_zshrc.tmpl                              # generates ~/.zshrc
+├── dot_zshrc.darwin                            # macOS-specific, inlined by dot_zshrc.root.tmpl
+├── dot_zshrc.root.tmpl                          # generates ~/.zshrc.root (sourced by ~/.zshrc)
 ├── run_once_symlink_dotfiles.sh                # symlinks `~/dotfiles` -> source dir
-└── run_onchange_install-brew-packages.sh.tmpl  # (re)installs Homebrew + packages
+└── run_onchange_install-from-brewfile.sh.tmpl  # (re)installs Homebrew + Brewfile packages
 ```
 
 ## How it's layered
@@ -51,20 +53,47 @@ Three execution contexts, each running at a different time:
 
 Two layers, picked by whether the difference is OS-wide or machine-specific:
 
-**OS-specific** — chezmoi templating, merged at `chezmoi apply` time. `dot_zshrc.tmpl` inlines `dot_zshrc.darwin` only on macOS; add more OS branches with `{{ if eq .chezmoi.os "linux" }}`. See [chezmoi templates](https://www.chezmoi.io/user-guide/templating/).
+**OS-specific** — chezmoi templating, merged at `chezmoi apply` time. `dot_zshrc.root.tmpl` inlines `dot_zshrc.darwin` only on macOS; add more OS branches with `{{ if eq .chezmoi.os "linux" }}`. See [chezmoi templates](https://www.chezmoi.io/user-guide/templating/).
 
-**Machine-specific** — untracked local files sourced at runtime. Drop overrides in:
+**Machine-specific** — for `~/.zshrc` and `~/.gitconfig`, the file in `$HOME` *is* the per-machine layer (cascade below). For `~/.vimrc`, an optional `~/.vimrc.local` is `source`d by tracked `dot_vimrc` if present.
 
-- `~/.gitconfig.local` — loaded by `[include]` in tracked `dot_gitconfig`
-- `~/.zshrc.local` — sourced at the end of generated `~/.zshrc`
+### The `.root` cascade
 
-Both are silently skipped if absent, so the same tracked config works on every machine. Example (work machine forcing HTTPS for GitHub):
+`~/.zshrc` and `~/.gitconfig` get edited by tooling (`git config --global`, work setup scripts), so chezmoi can't own them — it would keep reverting those edits. Instead, the real config lives in a tracked **`.root` file**, and chezmoi writes the actual `~/.zshrc` / `~/.gitconfig` just **once** (the `create_` source attribute: create if missing, then leave alone forever). That file pulls in its `.root` first, then whatever tooling/you add afterwards:
 
-```ini
-# ~/.gitconfig.local
-[url "https://github.com/"]
-    insteadOf = git@github.com:
+```sh
+# ~/.zshrc — created once, then yours to edit
+source ~/.zshrc.root          # tracked baseline
+# anything below overrides it
 ```
+```ini
+# ~/.gitconfig — created once, then yours to edit
+[include]
+	path = ~/.gitconfig.root  # tracked baseline
+# anything below overrides it
+```
+
+**Mental model:** treat edits to the everyday `~/.zshrc` / `~/.gitconfig` as a per-machine working copy. The `.root` file is `main` — when you want a change everywhere, "merge it back" by moving it into the tracked `.root`.
+
+The merge is **additive**: the `.root` baseline applies first, your local edits override only what they explicitly set, and everything else stays. The exact merge differs by tool (zsh = sequential shell eval, last assignment wins; git = last value wins across includes) but the result is the same. On a fresh machine the stubs are written automatically; if tooling created the file first, just add the `source`/`[include]` line to its top.
+
+### Adding another tool to the `.root` pattern
+
+When you adopt a new tool whose config tooling rewrites in place (and that can source another file), repeat the pattern by hand — it's two files per tool, no shared machinery:
+
+1. **`dot_<x>.root`** — move the real config here (the tracked baseline). Add `.tmpl` if it needs templating.
+2. **`create_dot_<x>`** — the once-written stub that pulls the baseline in **first**, using that tool's own include syntax:
+   - zsh: `source ~/.zshrc.root`
+   - git: `[include]` / `path = ~/.gitconfig.root`
+   - tmux: `source-file ~/.tmux.conf.root`
+   - vim: `source ~/.vimrc.root`
+
+   The `create_` attribute means chezmoi writes it once on a fresh machine, then never touches it — so the tool/your edits below the include win.
+3. **Migrate machines that already have the file** (one-time, per machine) — `create_` only fires when the file is absent, so existing machines need a manual nudge:
+   - File holds an *old copy of your managed config* → **overwrite** it with the stub (the config now lives in `.root`).
+   - File holds *foreign content you want to keep* → **prepend** the include line at the top, leaving the rest as the per-machine layer.
+
+There's deliberately no generic script driving this — with only a couple of tools, two explicit files each is simpler and lower-risk than a table-and-loop engine. Revisit that trade-off if a third or fourth tool shows up.
 
 ---
 

@@ -75,8 +75,9 @@
 	# Merge
 	m = merge
 	merge-abort = merge --abort
+# This file is the managed git baseline (chezmoi). It is included at the TOP of
+# ~/.gitconfig, which chezmoi creates once and never touches again — so per-machine
+# and tooling writes (git config --global ...) appended below the include override
+# what's set here. See README "Per-machine overrides".
 [init]
 	defaultBranch = main
-[include]
-	# Machine-specific overrides (silently skipped if missing)
-	path = ~/.gitconfig.local

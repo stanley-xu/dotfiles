@@ -1,0 +1,12 @@
+# This file is managed by dotfiles via chezmoi.
+# It is sourced from ~/.zshrc, which chezmoi creates once then never touches
+# (create_dot_zshrc) — that's the per-machine / work-tooling layer. ~/.zshrc
+# sources this at the top, so anything appended below it overrides this config.
+
+# Source my main config
+source ~/.config/zsh/main.zsh
+
+# OS-specific config (merged in at chezmoi apply time)
+{{ if eq .chezmoi.os "darwin" -}}
+{{   include "dot_zshrc.darwin" -}}
+{{ end }}

@@ -1,0 +1,6 @@
+# Managed config lives in ~/.zshrc.root (chezmoi). It's sourced at the top so that
+# per-machine and work-tooling edits appended below override it.
+#
+# chezmoi writes this file ONCE (create_ attribute) and never touches it again,
+# so tooling can rewrite ~/.zshrc freely without fighting chezmoi.
+source ~/.zshrc.root

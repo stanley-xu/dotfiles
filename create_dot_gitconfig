@@ -1,0 +1,9 @@
+# Managed git config lives in ~/.gitconfig.root (chezmoi). It's included first so
+# that per-machine and tooling writes (git config --global ...) appended below
+# override it — git applies last-value-wins across includes.
+#
+# chezmoi writes this file ONCE (create_ attribute) and never touches it again,
+# so `git config --global`, credential helpers, gh, etc. can edit ~/.gitconfig
+# freely without fighting chezmoi.
+[include]
+	path = ~/.gitconfig.root
