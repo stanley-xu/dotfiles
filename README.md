@@ -1,16 +1,17 @@
-# 👋 Welcome to my dotfiles
+# welcome to my dotfiles 😶‍🌫️
+
+My dotfiles don't bite!
+
+For tools like `zsh` that support "inheritance", my dotfiles stay out of your way. Your machine's `.zshrc` stays in your control, and simply `source`s mine at the beginning. You're free to override any of my config within your dotfile, or change the "root" one (at `dot_zshrc.root`). The **local config always wins**.
+
+_Note for people who aren't me: identity files like `.gitconfig` user should always be changed to be you!_
 
 ## Install
 
-My bootstrap script (installs `mise` + `chezmoi`):
-
 ```sh
+# installs `mise` + `chezmoi`
 curl -fsSL dotfiles.stanleyxu.me | sh
-```
 
-Or with `chezmoi` directly:
-
-```sh
 # works on any OS
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply "stanley-xu"
 
@@ -18,54 +19,43 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply "stanley-xu"
 brew install chezmoi && chezmoi init --apply "stanley-xu"
 ```
 
-## Layout
+## What are all these `dot` files?
+
+These are [chezmoi files](https://www.chezmoi.io). Think of these as blueprints that the `chezmoi` CLI tool will use to generate your actual dotfiles (like `.zshrc`). These blueprints lets `chezmoi` tailor the dotfile to your specific machine, if you'd like. Every file in this repo is "watched" or "managed" by `chezmoi`.
+
+It's still just an ordinary `git` repo, so feel free to fork and maintain your own. [Tips for using chezmoi below](#chezmoi-cheatsheet).
+
+## What can it do?
+
+Here are the scripts that install packages and keeps things up-to-date.
+
+1. **Chezmoi scripts** (`run_*.sh`) — run during `chezmoi apply`. `run_once_` runs once per machine; `run_onchange_` re-runs only when the script's content hash changes (e.g. editing the brew package list triggers reinstall).
+2. **Shell rc** (`main.zsh` → `install-tools.zsh`) — runs on every shell session. Clones git-sourced tools (`fzf`, `zinit`) if missing, then activates tools for the session (`mise`, `zoxide`).
+
+## A config for every computer
+
+Chezmoi uses templating which allows you to write your own config, per OS. For example, `dot_zshrc.root.tmpl` inlines `dot_zshrc.darwin` only on macOS. See [chezmoi templates](https://www.chezmoi.io/user-guide/templating/).
+
+## Shared and local configs for every computer
+
+For tools like `zsh` and `git`, I've set it up so the shared (`.root`) config files are loaded into the regular dotfile in only one direction.
 
 ```
-├── dot_claude
-│   └── agents
-├── dot_config                                  # XDG_CONFIG_HOME
-│   ├── chezmoi/chezmoi.toml
-│   ├── mise/config.toml
-│   ├── ohmyposh/prompt.toml
-│   └── zsh
-│       ├── aliases.zsh.tmpl                    # aliases
-│       ├── install-tools.zsh                   # (re)installs git-sourced tools
-│       └── main.zsh                            # entry point: system config, sources the above
-├── create_dot_gitconfig                        # ~/.gitconfig, created once then never touched; includes ~/.gitconfig.root
-├── create_dot_zshrc                            # ~/.zshrc, created once then never touched; sources ~/.zshrc.root
-├── dot_gitconfig.root                          # managed git baseline (included by ~/.gitconfig)
-├── dot_vimrc
-├── dot_zshrc.darwin                            # macOS-specific, inlined by dot_zshrc.root.tmpl
-├── dot_zshrc.root.tmpl                          # generates ~/.zshrc.root (sourced by ~/.zshrc)
-├── run_once_symlink_dotfiles.sh                # symlinks `~/dotfiles` -> source dir
-└── run_onchange_install-from-brewfile.sh.tmpl  # (re)installs Homebrew + Brewfile packages
+              | |
+Shared config --> Local config
+              | |
 ```
 
-## How it's layered
+Tools opt into shared configuration and the real dotfile is kept **out** of chezmoi's control. This way, there are no conflicts every time you (or your tooling) make edits to your dotfiles. You own your dotfiles. _Your work machine's config will not bleed into your other machines!_
 
-Three execution contexts, each running at a different time:
-
-1. **Bootstrap script** ([dotfiles.stanleyxu.me](https://dotfiles.stanleyxu.me)) — runs once on a fresh machine as a `curl … | sh` alternative to installing `chezmoi` yourself. Installs `mise` and `chezmoi`, then hands off to `chezmoi init --apply`.
-2. **Chezmoi scripts** (`run_*.sh`) — run during `chezmoi apply`. `run_once_` runs once per machine; `run_onchange_` re-runs only when the script's content hash changes (e.g. editing the brew package list triggers reinstall).
-3. **Shell rc** (`main.zsh` → `install-tools.zsh`) — runs on every shell session. Clones git-sourced tools (`fzf`, `zinit`) if missing, then activates tools for the session (`mise`, `zoxide`).
-
-## Per-machine overrides
-
-Two layers, picked by whether the difference is OS-wide or machine-specific:
-
-**OS-specific** — chezmoi templating, merged at `chezmoi apply` time. `dot_zshrc.root.tmpl` inlines `dot_zshrc.darwin` only on macOS; add more OS branches with `{{ if eq .chezmoi.os "linux" }}`. See [chezmoi templates](https://www.chezmoi.io/user-guide/templating/).
-
-**Machine-specific** — for `~/.zshrc` and `~/.gitconfig`, the file in `$HOME` *is* the per-machine layer (cascade below). For `~/.vimrc`, an optional `~/.vimrc.local` is `source`d by tracked `dot_vimrc` if present.
-
-### The `.root` cascade
-
-`~/.zshrc` and `~/.gitconfig` get edited by tooling (`git config --global`, work setup scripts), so chezmoi can't own them — it would keep reverting those edits. Instead, the real config lives in a tracked **`.root` file**, and chezmoi writes the actual `~/.zshrc` / `~/.gitconfig` just **once** (the `create_` source attribute: create if missing, then leave alone forever). That file pulls in its `.root` first, then whatever tooling/you add afterwards:
+**Local config always wins**
 
 ```sh
 # ~/.zshrc — created once, then yours to edit
 source ~/.zshrc.root          # tracked baseline
 # anything below overrides it
 ```
+
 ```ini
 # ~/.gitconfig — created once, then yours to edit
 [include]
@@ -73,9 +63,15 @@ source ~/.zshrc.root          # tracked baseline
 # anything below overrides it
 ```
 
-**Mental model:** treat edits to the everyday `~/.zshrc` / `~/.gitconfig` as a per-machine working copy. The `.root` file is `main` — when you want a change everywhere, "merge it back" by moving it into the tracked `.root`.
+The merge is **additive**: the `.root` baseline applies first, your local edits override only what they explicitly set, and everything else stays. The exact merge differs by tool but the result is the same.
 
-The merge is **additive**: the `.root` baseline applies first, your local edits override only what they explicitly set, and everything else stays. The exact merge differs by tool (zsh = sequential shell eval, last assignment wins; git = last value wins across includes) but the result is the same. On a fresh machine the stubs are written automatically; if tooling created the file first, just add the `source`/`[include]` line to its top.
+### Extracting into the shared config
+
+Treat edits to the everyday `~/.zshrc` / `~/.gitconfig` as a per-machine working copy. The `.root` file is like `git`'s main branch — when you want a change everywhere, "merge it back upstream" by moving it into the tracked `.root`.
+
+### What if I already have a dotfile?
+
+On a fresh machine the stubs are written automatically; if you / tooling created the file first, you'll need to add the `source`/`[include]` line to its top.
 
 ### Adding another tool to the `.root` pattern
 
@@ -89,9 +85,12 @@ When you adopt a new tool whose config tooling rewrites in place (and that can s
    - vim: `source ~/.vimrc.root`
 
    The `create_` attribute means chezmoi writes it once on a fresh machine, then never touches it — so the tool/your edits below the include win.
-3. **Migrate machines that already have the file** (one-time, per machine) — `create_` only fires when the file is absent, so existing machines need a manual nudge:
-   - File holds an *old copy of your managed config* → **overwrite** it with the stub (the config now lives in `.root`).
-   - File holds *foreign content you want to keep* → **prepend** the include line at the top, leaving the rest as the per-machine layer.
+
+3. **Migrate machines that already have the file** (one-time, per machine) — `create_` only fires when the file is absent, so existing machines need a manual nudge. Split the existing config however you like, line by line:
+   - **shared across all machines** → move into `~/.<tool>.root` (tracked, via chezmoi).
+   - **machine-specific, or unsure** → leave it in the everyday dotfile (it overrides the baseline).
+
+   Then make sure the everyday file pulls in its `.root` at the top. You don't have to remember to do this: `run_after_check-overrides.sh` runs (read-only) after every `chezmoi apply` and warns you, with these instructions, until the machine is migrated. Extend its short check list when you add a tool.
 
 There's deliberately no generic script driving this — with only a couple of tools, two explicit files each is simpler and lower-risk than a table-and-loop engine. Revisit that trade-off if a third or fourth tool shows up.
 

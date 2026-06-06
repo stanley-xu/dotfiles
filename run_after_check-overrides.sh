@@ -3,7 +3,7 @@
 # file; it only warns when this machine's dotfiles predate the .root pattern and
 # still hold their config inline instead of sourcing the shared ~/.<tool>.root
 # baseline. Splitting them is a per-line judgement call, so this just points at
-# the docs. See README "Per-machine overrides".
+# the docs. See README "What if I already have a dotfile?".
 
 pending=""
 
@@ -22,7 +22,7 @@ if [ -n "$pending" ]; then
     printf '    Decide what goes where — your call, line by line:\n'
     printf '      • shared across all machines   →  move into ~/.<tool>.root  (tracked, via chezmoi)\n'
     printf '      • machine-specific, or unsure  →  leave it in the everyday dotfile  (overrides the baseline)\n\n'
-    printf '    Full steps: chezmoi cd → README.md → "Per-machine overrides"\n\n'
+    printf '    Full steps: chezmoi cd → README.md → "What if I already have a dotfile?"\n\n'
 fi
 
 exit 0
