@@ -1,6 +1,5 @@
-[user]
-	name = Stanley Xu
-	email = stanley.xuu@gmail.com
+# No [user] here on purpose: identity is per-person / per-machine, so it lives in
+# the untracked ~/.gitconfig (see create_dot_gitconfig), never in this shared baseline.
 [alias]
 	# High-frequency commands (short aliases)
 	st = status

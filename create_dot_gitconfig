@@ -5,5 +5,10 @@
 # chezmoi writes this file ONCE (create_ attribute) and never touches it again,
 # so `git config --global`, credential helpers, gh, etc. can edit ~/.gitconfig
 # freely without fighting chezmoi.
+#
+# Set your identity here — it stays local and is never tracked. Use a private
+# email (e.g. GitHub's <id>+<user>@users.noreply.github.com) to avoid leaking it:
+#   git config --global user.name  "Your Name"
+#   git config --global user.email "<id>+<user>@users.noreply.github.com"
 [include]
 	path = ~/.gitconfig.root
