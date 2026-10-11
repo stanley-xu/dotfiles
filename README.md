@@ -38,9 +38,7 @@ Chezmoi uses templating which allows you to write your own config, per OS. For e
 
 Some config only deploys once you've installed the app yourself — nothing installs it for you. The gate lives in `.chezmoiignore`.
 
-- **Karabiner-Elements** — `brew install --cask karabiner-elements`, then `chezmoi apply`. Scoped to the Keychron K6 only (the built-in keyboard keeps media keys on its F-row):
-  - F1–F12 pass through as real F-keys, so the K6's Fn2 layer works. The K6 identifies as an Apple keyboard, so without this macOS turns its F-keys into media keys.
-  - Cmd ↔ Option swapped on both sides.
+- **Karabiner-Elements** — `brew install --cask karabiner-elements`, then `chezmoi apply`. Scoped to the Keychron K6 only (the built-in keyboard keeps media keys on its F-row): F1–F12 pass through as real F-keys, so the K6's Fn2 layer works. The K6 identifies as an Apple keyboard, so without this macOS turns its F-keys into media keys.
 
   Karabiner rewrites `karabiner.json` when you change settings in its UI — re-ingest with `chezmoi add ~/.config/karabiner/karabiner.json`.
 
