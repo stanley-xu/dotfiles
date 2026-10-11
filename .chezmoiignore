@@ -11,3 +11,10 @@ Brewfile
 
 # Local override files (e.g. ~/.vimrc.local): live in $HOME, never managed by chezmoi.
 *.local
+
+# Karabiner is opt-in: its config only deploys on Macs where the app is installed
+# (`brew install --cask karabiner-elements`, then `chezmoi apply`).
+{{- if not (stat "/Applications/Karabiner-Elements.app") }}
+.config/karabiner
+.config/karabiner/**
+{{- end }}

@@ -34,6 +34,16 @@ Here are the scripts that install packages and keeps things up-to-date.
 
 Chezmoi uses templating which allows you to write your own config, per OS. For example, `dot_zshrc.root.tmpl` inlines `dot_zshrc.darwin` only on macOS. See [chezmoi templates](https://www.chezmoi.io/user-guide/templating/).
 
+### Opt-in apps
+
+Some config only deploys once you've installed the app yourself — nothing installs it for you. The gate lives in `.chezmoiignore`.
+
+- **Karabiner-Elements** — `brew install --cask karabiner-elements`, then `chezmoi apply`. Scoped to the Keychron K6 only (the built-in keyboard keeps media keys on its F-row):
+  - F1–F12 pass through as real F-keys, so the K6's Fn2 layer works. The K6 identifies as an Apple keyboard, so without this macOS turns its F-keys into media keys.
+  - Cmd ↔ Option swapped on both sides.
+
+  Karabiner rewrites `karabiner.json` when you change settings in its UI — re-ingest with `chezmoi add ~/.config/karabiner/karabiner.json`.
+
 ## Shared and local configs for every computer
 
 For tools like `zsh` and `git`, I've set it up so the shared (`.root`) config files are loaded into the regular dotfile in only one direction.
