@@ -2,7 +2,7 @@
 # the untracked ~/.gitconfig (see create_dot_gitconfig), never in this shared baseline.
 [alias]
 	# Status and diff
-	stat = status # likely have the shell alias `gst`
+	stat = status --short # likely have the shell alias `gst`
 	sh = show
 	d = diff
 	l = log
@@ -14,6 +14,7 @@
 	aa = add .
 	ac = "!git add . && git commit"
 	acm = "!git add . && git commit --message"
+	cm = "commit --message"
 
 	# Change HEAD
 	s = switch
@@ -39,6 +40,7 @@
 	amend = commit --amend HEAD
 	amend-reuse = commit --amend --reuse-message HEAD
 	cp = cherry-pick --ff
+	wt = worktree
 	
 # This file is the managed git baseline (chezmoi). It is included at the TOP of
 # ~/.gitconfig, which chezmoi creates once and never touches again — so per-machine
