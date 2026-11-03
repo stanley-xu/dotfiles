@@ -1,0 +1,7 @@
+# Shared Ghostty baseline, managed by chezmoi (dot_config/ghostty/config.ghostty).
+#
+# Ghostty loads this XDG file first, then (macOS) the local file at
+# ~/Library/Application Support/com.mitchellh.ghostty/config.ghostty, which is
+# never managed and overrides anything here. Reload with cmd+shift+, after edits.
+
+shell-integration-features = sudo,ssh-terminfo,ssh-env
