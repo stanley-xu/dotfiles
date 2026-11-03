@@ -100,6 +100,22 @@ When you adopt a new tool whose config tooling rewrites in place (and that can s
 
    Then make sure the everyday file pulls in its `.root` at the top. You don't have to remember to do this: `run_after_check-overrides.sh` runs (read-only) after every `chezmoi apply` and warns you, with these instructions, until the machine is migrated. Extend its short check list when you add a tool.
 
+### fish: no stub needed
+
+fish has this layering built in. It sources every `~/.config/fish/conf.d/*.fish` **before** `~/.config/fish/config.fish`, so the shared baseline is just a managed `conf.d` snippet and the everyday `config.fish` stays entirely yours:
+
+| | zsh | fish |
+|---|---|---|
+| Shared baseline (chezmoi) | `~/.zshrc.root` | `~/.config/fish/conf.d/00-root.fish` |
+| Everyday dotfile (yours + tooling) | `~/.zshrc` | `~/.config/fish/config.fish` |
+| How the baseline loads | `create_` stub with `source` | automatically, by fish |
+
+No `create_` stub, no migration, and no entry in `run_after_check-overrides.sh`: an existing `config.fish` already runs after the baseline. The `00-` prefix makes the baseline run before any other `conf.d` snippet, so those override it too. Templating and per-OS branches go in the baseline's source file (`dot_config/fish/conf.d/00-root.fish.tmpl`), same as `dot_zshrc.root.tmpl`.
+
+Aliases are shared by both shells via `~/.config/shell/aliases.sh`: keep it to `alias name='command'` lines, the one form both parse. Installers that append to `~/.zshrc` don't know about fish, so port those lines into `config.fish` by hand (use `fish_add_path -g`, not plain `fish_add_path`, which persists to `fish_variables` instead of the file).
+
+fish runs inside Ghostty only (`command = /opt/homebrew/bin/fish` in Ghostty's config); the login shell stays zsh.
+
 There's deliberately no generic script driving this — with only a couple of tools, two explicit files each is simpler and lower-risk than a table-and-loop engine. Revisit that trade-off if a third or fourth tool shows up.
 
 ---

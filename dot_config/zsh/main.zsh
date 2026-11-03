@@ -26,7 +26,7 @@ bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 
 # Aliases
-source ~/.config/zsh/aliases.zsh
+source ~/.config/shell/aliases.sh  # shared with fish
 
 # Install and initialize tools (fzf, zinit, zoxide, mise)
 source ~/.config/zsh/install-tools.zsh

@@ -1,0 +1,45 @@
+# Shared fish baseline, managed by chezmoi (dot_config/fish/conf.d/00-root.fish.tmpl).
+#
+# fish's equivalent of ~/.zshrc.root. fish sources every conf.d/*.fish before
+# config.fish, so ~/.config/fish/config.fish (local, never managed: yours and
+# your tooling's) always runs last and wins. No stub or `source` line needed.
+# The `00-` prefix makes this run before any other conf.d snippet.
+
+# XDG Base Directory Specification
+set -gx XDG_CONFIG_HOME $HOME/.config
+set -gx XDG_DATA_HOME $HOME/.local/share
+set -gx XDG_CACHE_HOME $HOME/.cache
+set -gx USER_INSTALLS $HOME/.local/bin # common convention (incl. mise)
+
+{{ if eq .chezmoi.os "darwin" -}}
+# Homebrew: zsh gets this from ~/.zprofile, which fish never reads
+/opt/homebrew/bin/brew shellenv fish | source
+
+{{ end -}}
+# -g: session-only. Plain fish_add_path saves to fish_variables (universal) and
+# would silently accumulate entries outside of any config file.
+fish_add_path -g $USER_INSTALLS $XDG_DATA_HOME/fzf/fzf.git/bin
+
+if status is-interactive
+    # Built in, so nothing to configure (the zsh setup needs zinit + setopts):
+    # syntax highlighting, autosuggestions (ctrl-f accepts), completions,
+    # case-insensitive matching, deduped + leading-space-ignored history,
+    # ctrl-p/ctrl-n prefix history search, alt-s to prepend sudo.
+    set -g fish_greeting # no welcome banner
+
+    source $XDG_CONFIG_HOME/shell/aliases.sh
+
+    type -q zoxide; and zoxide init fish | source
+    type -q mise; and mise activate fish | source
+    type -q fzf; and fzf --fish | source # ctrl-r history, ctrl-t files, alt-c cd
+
+    # Prompt (skipped in Terminal.app, same as zsh: its hex colors need truecolor)
+    if type -q starship; and test "$TERM_PROGRAM" != Apple_Terminal
+        starship init fish | source
+        # Transient prompt: past prompts collapse to just the `>` character
+        function starship_transient_prompt_func
+            starship module character
+        end
+        enable_transience
+    end
+end
