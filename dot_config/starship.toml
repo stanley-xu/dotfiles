@@ -1,0 +1,30 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Port of ~/.config/ohmyposh/prompt.toml:  <full path> <git branch+status> >
+add_newline = true
+format = "$directory($git_branch$git_status )$character"
+palette = "posh"
+
+[palettes.posh]
+fg = '#E0DEF4'
+muted = '#6c6c6c'
+accent = '#00d5ff'
+
+[directory]
+style = 'fg'
+format = '[$path]($style) '
+truncation_length = 0   # show the full path
+truncate_to_repo = false
+read_only = ''
+
+[git_branch]
+style = 'muted'
+format = '[$branch]($style)'
+
+[git_status]
+style = 'muted'
+format = '([ $all_status$ahead_behind]($style))'
+
+[character]
+success_symbol = '[>](accent)'
+error_symbol = '[>](red)'
